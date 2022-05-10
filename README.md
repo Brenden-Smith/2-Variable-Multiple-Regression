@@ -1,4 +1,4 @@
-# EE381
+# EE381 Final Project
 
 ## Important Links
 
