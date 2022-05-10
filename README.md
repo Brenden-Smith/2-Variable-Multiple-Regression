@@ -2,4 +2,5 @@
 
 ## Important Links
 
+Proposal: <link>
 Data: <link>
