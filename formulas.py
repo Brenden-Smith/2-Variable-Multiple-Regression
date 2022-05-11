@@ -101,17 +101,17 @@ class Formulas:
     '''
     
     # Initialize array
-    beta = []
+    se_beta = []
     
     # Calculate matrix composed of X'X
     mat = np.linalg.pinv(np.matmul(np.transpose(x), x))
     
     # Calculate standard error for beta0, beta1, and beta2
     for i in range(len(mat)):
-      beta[i] = np.sqrt(mse * mat[i][i])
+      se_beta[i] = np.sqrt(mse * mat[i][i])
       
     # Return standard error for beta0, beta1, and beta2
-    return beta
+    return se_beta
   
   def coefficient_of_correlation(x, y):
     '''
