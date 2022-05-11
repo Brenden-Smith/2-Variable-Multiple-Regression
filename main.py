@@ -18,7 +18,7 @@ from scipy import stats
 # Import Formulas class from formulas.py
 from formulas import Formulas
 
-def test_hypothesis(b, se, n, alpha):
+def test_hypothesis(beta, b, se, n, alpha):
   '''
   Test the hypothesis of linearity b = 0 vs b != 0 at significance level alpha
   
@@ -31,10 +31,9 @@ def test_hypothesis(b, se, n, alpha):
   Returns:
     bool: True if the hypothesis is rejected, False if the hypothesis is accepted
   '''
-  print(b, se, n)
   
-  # Calculate the z-statistic 
-  t_stat = (b - 0) / se
+  # Calculate the t-statistic 
+  t_stat = (beta - b) / se
   
   # Calculate the p-value
   p_value = stats.t.sf(np.abs(t_stat), n - 1) * 2
@@ -61,9 +60,9 @@ def main():
   
   # Label the axes
   ax.set_xlabel("Critic Score")
-  ax.set_ylabel("User Scores")
-  ax.set_zlabel("Album Sales")
-  
+  ax.set_ylabel("User Score")
+  ax.set_zlabel("Album Streams")
+
   # Create X and Y matrices
   X_mat = np.column_stack(([1] * len(data["x1"]), data["x1"], data["x2"]))
   Y_mat = np.reshape(np.array(data["y"]), (len(data["y"]), 1))
@@ -109,12 +108,12 @@ def main():
   ### Hypothesis testing for linearity of beta1 and beta2 at 0.01 significance level ###
   
   # Test beta1 = 0 vs beta1 != 0
-  if(test_hypothesis(beta1, se_beta1, len(data["y"])), 0.01): print("Reject the null hypothesis that beta1 = 0.")
+  if(test_hypothesis(beta1, 0, se_beta1, len(data["y"])), 0.01): print("Reject the null hypothesis that beta1 = 0.")
   else: print("Accept the null hypothesis that beta1 = 0.")
   print()
   
   # Test beta2 = 0 vs beta2 != 0
-  if(test_hypothesis(beta2, se_beta2, len(data["y"])), 0.01): print("Reject the null hypothesis that beta2 = 0.")
+  if(test_hypothesis(beta2, 0, se_beta2, len(data["y"])), 0.01): print("Reject the null hypothesis that beta2 = 0.")
   else: print("Accept the null hypothesis that beta2 = 0.")
   print()
   
