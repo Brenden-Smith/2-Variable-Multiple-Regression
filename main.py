@@ -18,14 +18,15 @@ from scipy import stats
 # Import Formulas class from formulas.py
 from formulas import Formulas
 
-def test_hypothesis(beta, b, se, n, alpha):
+def test_hypothesis(beta, name, b, se, n, alpha):
   '''
   Test the hypothesis of linearity b = 0 vs b != 0 at significance level alpha
   
   Parameters:
-    b (int): the beta value
-    se (int): the standard error of the beta value
-    n (int): the number of data points
+    beta (int): The beta value
+    b (int): The hypothesized value of beta
+    se (int): The standard error of the beta value
+    n (int): The number of data points
     alpha (int): the significance level
     
   Returns:
@@ -35,13 +36,14 @@ def test_hypothesis(beta, b, se, n, alpha):
   # Calculate the t-statistic 
   t_stat = (beta - b) / se
   
+  print("t-statistic:", t_stat, "with", n-2, "degrees of freedom")
+  
   # Calculate the p-value
   p_value = stats.t.sf(np.abs(t_stat), n - 1) * 2
-  print("p-value:", p_value)
   
   # If the p-value is less than alpha, reject the null hypothesis. Else, accept the null hypothesis.
-  if p_value < alpha: return False
-  else: return True
+  if p_value < alpha: print("Reject the hypothesis", name, "=", b, "at", alpha, "with a p-value of", p_value) 
+  else: print("Accept the hypothesis", name, "=", b, "at", alpha, "with a p-value of", p_value) 
 
 def main():
   '''
@@ -61,7 +63,7 @@ def main():
   # Label the axes
   ax.set_xlabel("Critic Score")
   ax.set_ylabel("User Score")
-  ax.set_zlabel("Album Streams")
+  ax.set_zlabel("Album Popularity")
 
   # Create X and Y matrices
   X_mat = np.column_stack(([1] * len(data["x1"]), data["x1"], data["x2"]))
@@ -69,12 +71,19 @@ def main():
   
   ### Calculations ###
   
-  # Calculate beta0, beta1, and beta2
+  # Normal: Calculate beta0, beta1, and beta2
   beta0, beta1, beta2 = Formulas.beta(X_mat, Y_mat)
   print("beta0:", beta0)
   print("beta1:", beta1)
   print("beta2:", beta2)
   print()
+  
+  # Least square algorithm: Calculate beta0, beta1, and beta2
+  # beta0_ls, beta1_ls, beta2_ls = Formulas.least_square(X_mat, data["x1"], data["x2"], data["y"])
+  # print("beta0_ls:", beta0_ls)
+  # print("beta1_ls:", beta1_ls)
+  # print("beta2_ls:", beta2_ls)
+  # print()
   
   # Calculate the regression values for y
   Y_reg = []
@@ -108,13 +117,11 @@ def main():
   ### Hypothesis testing for linearity of beta1 and beta2 at 0.01 significance level ###
   
   # Test beta1 = 0 vs beta1 != 0
-  if(test_hypothesis(beta1, 0, se_beta1, len(data["y"])), 0.01): print("Reject the null hypothesis that beta1 = 0.")
-  else: print("Accept the null hypothesis that beta1 = 0.")
+  test_hypothesis(beta1, "beta1", 0, se_beta1, len(data["y"]), 0.01)
   print()
   
   # Test beta2 = 0 vs beta2 != 0
-  if(test_hypothesis(beta2, 0, se_beta2, len(data["y"])), 0.01): print("Reject the null hypothesis that beta2 = 0.")
-  else: print("Accept the null hypothesis that beta2 = 0.")
+  test_hypothesis(beta2, "beta2", 0, se_beta2, len(data["y"]), 0.01)
   print()
   
   # Plot the plane of best fit
