@@ -50,8 +50,11 @@ def main():
   Main function
   '''
   
+  path = "data_150.csv"
+  
   # Import data from csv file using pandas
-  data = pd.read_csv("data.csv")
+  data = pd.read_csv(path)
+  print(path, "imported successfully")
   
   ### Data preprocessing ###
   
@@ -77,13 +80,6 @@ def main():
   print("beta1:", beta1)
   print("beta2:", beta2)
   print()
-  
-  # Least square algorithm: Calculate beta0, beta1, and beta2
-  # beta0_ls, beta1_ls, beta2_ls = Formulas.least_square(X_mat, data["x1"], data["x2"], data["y"])
-  # print("beta0_ls:", beta0_ls)
-  # print("beta1_ls:", beta1_ls)
-  # print("beta2_ls:", beta2_ls)
-  # print()
   
   # Calculate the regression values for y
   Y_reg = []
