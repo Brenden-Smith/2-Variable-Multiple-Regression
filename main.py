@@ -24,13 +24,11 @@ def test_hypothesis(beta, name, b, se, n, alpha):
   
   Parameters:
     beta (int): The beta value
+    name (str): The name of the beta value
     b (int): The hypothesized value of beta
     se (int): The standard error of the beta value
     n (int): The number of data points
     alpha (int): the significance level
-    
-  Returns:
-    bool: True if the hypothesis is rejected, False if the hypothesis is accepted
   '''
   
   # Calculate the t-statistic 
@@ -50,7 +48,8 @@ def main():
   Main function
   '''
   
-  path = "data_150.csv"
+  path = "data_125.csv"
+  # path = "data_150.csv"
   
   # Import data from csv file using pandas
   data = pd.read_csv(path)
@@ -124,12 +123,11 @@ def main():
   x1 = np.linspace(min(data["x1"]), max(data["x1"]), 100)
   x2 = np.linspace(min(data["x2"]), max(data["x2"]), 100)
   x1, x2 = np.meshgrid(x1, x2)
-  ax.plot_surface(x1, x2, Formulas.regression_line(x1, x2, beta0, beta1, beta2))
+  ax.plot_surface(x1, x2, Formulas.regression_line(x1, x2, beta0, beta1, beta2), color='r', alpha=0.5)
   
-  # Save graph images
-  for i in np.arange(0, 360, 1):
-    ax.view_init(elev=32, azim=i)
-    fig.savefig('./gif/gif_image%d.png' % i)
+  # Save graph image
+  ax.view_init(elev=12, azim=45)
+  fig.savefig('./img/%s.png' % path)
     
   # Show the graph
   plt.show()
