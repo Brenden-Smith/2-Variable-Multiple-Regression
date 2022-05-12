@@ -11,7 +11,6 @@ class Formulas:
   There are no instance variables, all methods are static.
   '''
   
-  # Regression line
   def regression_line(x1, x2, beta0, beta1, beta2):
     '''
     Regression line formula
@@ -60,7 +59,7 @@ class Formulas:
       y_reg (array): y^ values
     
     Returns:
-      int: Sum of squares error
+      double: Sum of squares error
     '''
     
     # Calculate matrix composed of  (y - y_reg)
@@ -108,7 +107,7 @@ class Formulas:
     
     # Calculate standard error for beta0, beta1, and beta2
     for i in range(len(mat)):
-      se_beta[i] = np.sqrt(mse * mat[i][i])
+      se_beta.append(np.sqrt(mse * mat[i][i]))
       
     # Return standard error for beta0, beta1, and beta2
     return se_beta
@@ -143,4 +142,7 @@ class Formulas:
     
     # Return result
     return numerator / denominator
+    
+    
+    
     
